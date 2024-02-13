@@ -1,2 +1,30 @@
 from config import db
 
+# Define the Adventurer and Quest classes
+class Adventurer(db.Model):
+    __tablename__ = 'adventurers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+    adventurer_class = db.Column(db.String)
+    level = db.Column(db.Integer)
+    experience = db.Column(db.Integer)
+
+    quests = db.relationship('Quest', back_populates='adventurer')
+
+    def __repr__(self) -> str:
+        return f'Adventurer Name: {self.name}'
+
+class Quest(db.Model):
+    __tablename__ = 'quests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, unique=True, nullable=False)
+    description = db.Column(db.String)
+    difficulty = db.Column(db.String)
+
+    adventurer_id = db.Column(db.Integer, db.ForeignKey('adventurers.id'))
+    adventurer = db.relationship('Adventurer', back_populates='quests')
+
+    def __repr__(self) -> str:
+        return f'Quest: <Title: {self.title}> /n <Description: {self.description}'
