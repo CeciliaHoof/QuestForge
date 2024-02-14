@@ -13,7 +13,7 @@ class Adventurer(db.Model):
     quests = db.relationship('Quest', back_populates='adventurer')
 
     def __repr__(self) -> str:
-        return f'Adventurer Name: {self.name}'
+        return f'{self.name}'
 
 class Quest(db.Model):
     __tablename__ = 'quests'
@@ -25,6 +25,3 @@ class Quest(db.Model):
 
     adventurer_id = db.Column(db.Integer, db.ForeignKey('adventurers.id'))
     adventurer = db.relationship('Adventurer', back_populates='quests')
-
-    def __repr__(self) -> str:
-        return f'Quest: <Title: {self.title}> /n <Description: {self.description}'
