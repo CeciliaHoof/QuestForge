@@ -10,7 +10,7 @@ def get_unassigned_quests():
     return db.session.query(Quest).filter(Quest.adventurer_id.is_(None)).all()
 
 def create_adventurer(name, adventurer_class):
-    new_adventurer = Adventurer(name = name, adventurer_class = adventurer_class, level = 1, experience = 0)
+    new_adventurer = Adventurer(name = name, adventurer_class = adventurer_class)
     db.session.add(new_adventurer)
     db.session.commit()
 

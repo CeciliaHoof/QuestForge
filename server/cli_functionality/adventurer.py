@@ -171,7 +171,7 @@ def handle_questing_menu(choice):
     enter_tavern()
   else:
     print("Invalid Input. Please input 1 or 2.")
-    embark_on_quest()
+    enter_tavern()
 
 def fire_adventurer():
   print(f'Firing an Adventure will remove them from their quests, and any successfully completed quests will be reset to incomplete.')
