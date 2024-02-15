@@ -117,18 +117,23 @@ def attempt_quest(adventurer, quest):
   success_threshold = difficulty_multiplier.get(quest.difficulty)
   roll = random.randint(1, 20)
   
+  experience_gained = 0
+
   if roll >= success_threshold:
     experience_gained = experience_multiplier.get(quest.difficulty)
     print(f"{adventurer.name} successfully completed the quest {quest.title}. {experience_gained} XP gained.\n")
-    complete_quest(adventurer, experience_gained, quest)
+    complete_quest(adventurer, experience_gained, quest, 'Complete')
   else:
     print(f"{adventurer.name} failed the quest {quest.title}. To reattempt this quest, visit the Quest Board and view incomplete Quests.\n\nTime for a death roll...\n")
+    
     death_roll =  random.randint(1, 20)
-    if death_roll == 1:
+    if death_roll > 10:
       print(f"{adventurer.name} was {quest.death}... RIP\n")
       delete_adventurer(adventurer.id)
     else:
       print(f"Phew! {adventurer.name} survived\n")
+      complete_quest(adventurer, experience_gained, quest, 'Failed')
+  
 
 def fire_adventurer():
   print(f'Firing an Adventure will remove them from their quests, and any successfully completed quests will be reset to incomplete.')
