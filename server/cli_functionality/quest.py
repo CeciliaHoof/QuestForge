@@ -1,4 +1,5 @@
 from db_utils import *
+from .adventurer import attempt_quest
 
 def view_quest_board():
   print("Welcome to the Quest board!")
@@ -11,7 +12,7 @@ def display_quest_menu():
   print("Quest Menu")
   print("1. View Quest Details")
   print("2. View Quests by Type")
-  print("3. View Unclaimed Quests")
+  print("3. View Failed Quests")
   print("4. View Completed Quests")
   print("5. Return to Main Menu")
   handle_quest_choice()
@@ -23,7 +24,7 @@ def handle_quest_choice():
   elif choice == "2":
     display_quests_by_type()
   elif choice == "3":
-    display_unclaimed_quests()
+    display_failed_quests()
   elif choice == '4':
     display_completed_quests()
   elif choice == "5":
@@ -53,38 +54,72 @@ def display_quests_by_type():
       print("Invalid type. Please check your input")
   display_quest_submenu()
 
-def display_unclaimed_quests():
-  quests = get_unassigned_quests()
+def display_failed_quests():
+  quests = [quest for quest in get_all_quests() if quest.status == "Failed"]
   if len(quests) == 0:
-    print("\nAll Quests are claimed! Navigate to Tavern to embark on a Quest.")
+    print("\nAll Quests are currently unattempted or completed.")
+    display_quest_submenu()
   else:
-    print("\nUnclaimed Quests")
+    print("\nFailed Quests")
     for quest in quests:
-      print(f"\n{quest.title} \n Description: {quest.description} \n Difficulty: {quest.difficulty} \n Adventurer: {quest.adventurer}\n Type: {quest.quest_type}")
-  display_quest_submenu()
+      print(f"\n{quest.title} \n Description: {quest.description} \n Difficulty: {quest.difficulty} \n Adventurer: {quest.adventurer}")
+    display_questing_menu()
+
+def embark_on_quest():
+  quests = [quest for quest in get_all_quests() if quest.status == "Failed"]
+  if len(quests) == 0:
+    print("\nAll Quests are currently unattempted or completed.")
+    display_quest_submenu()
+  else:
+    for q in quests:
+      print(f"\n{q.id} | {q.title}\n Difficulty: {q.difficulty} | Adventurer: {q.adventurer}\n")
+    q_id = input("Which Quest do you want to attempt? (Enter the number next to the Quest title) ")
+    quest = get_quest_by_id(q_id)
+    if quest is None or quest not in quests:
+      print("Invalid Quest. Please check your input.")
+    else:
+      adventurer = get_adventurer_by_id(quest.adventurer_id)
+      attempt_quest(adventurer, quest)
+    display_questing_menu()
 
 def display_completed_quests():
-  quests = [quest for quest in get_all_quests() if quest.status == "complete"]
+  quests = [quest for quest in get_all_quests() if quest.status == "Complete"]
   if len(quests) == 0:
-    print("\nNo Quests have been completed! Navigate to Tavern to embarks on a Quest.")
+    print("\nNo Quests have been completed! Navigate to Tavern to hire Adventurers.")
   else:
     print("\nCompleted Quests")
     for quest in quests:
-      print(f"\n{quest.title} \n Description: {quest.description} \n Difficulty: {quest.difficulty} \n Adventurer: {quest.adventurer}")
+      print(f"\n{quest.title} \n Description: {quest.description} \n Difficulty: {quest.difficulty} \n Adventurer: {quest.adventurer}\n Type: {quest.quest_type}")
   display_quest_submenu()
 
 def display_quest_submenu():
   print('\n')
   print('1. Return to Quest Board')
   print('2. Return to Main Menu')
-  handle_quest_submenu()
-
-def handle_quest_submenu():
   choice = input("Where would you like to go now? (1/2) ")
+  handle_quest_submenu(choice)
+
+def handle_quest_submenu(choice):
   if choice == '1':
     view_quest_board()
   elif choice == '2':
     return
+  else:
+    print("Invalid choice. Please enter 1 or 2.")
+    view_quest_board()
+
+def display_questing_menu():
+  print('\n')
+  print('1. Embark on Quest')
+  print('2. Return to Quest Board')
+  choice = input("What would you like to do now? (1/2) ")
+  handle_questing_menu(choice)
+
+def handle_questing_menu(choice):
+  if choice == '1':
+    embark_on_quest()
+  elif choice == '2':
+    view_quest_board()
   else:
     print("Invalid choice. Please enter 1 or 2.")
     view_quest_board()

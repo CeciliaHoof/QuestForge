@@ -50,9 +50,9 @@ def get_quests_by_type(type):
     q_type = type.lower()
     return db.session.query(Quest).filter(db.func.lower(Quest.quest_type) == q_type).all()
 
-def complete_quest(adventurer, experience, quest):
+def complete_quest(adventurer, experience, quest, success):
     adventurer.experience += experience
-    quest.status = 'Complete'
+    quest.status = success
     db.session.commit()
 
     level_up_conditions = [(5, 1), (10, 2), (15, 3)]
@@ -62,4 +62,4 @@ def complete_quest(adventurer, experience, quest):
             adventurer.level += 1
             adventurer.experience -= experience_threshold
             db.session.commit()
-            print(f'{adventurer.name} leveled up! They are now level {adventurer.level}')
+            print(f'{adventurer.name} leveled up! They are now level {adventurer.level}\n')

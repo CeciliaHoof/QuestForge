@@ -89,7 +89,7 @@ if __name__ == "__main__":
       Quest(
           title="Thieves' Guild Heist",
           description="Steal a priceless artifact from the heavily guarded Thieves' Guild headquarters.",
-          difficulty="Hard",
+          difficulty="Medium",
           quest_type="Stealth",
           death="caught in the act and subjected to the guild's ruthless punishment"
       )
