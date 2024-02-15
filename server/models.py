@@ -7,7 +7,7 @@ class Adventurer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     adventurer_class = db.Column(db.String)
-    level = db.Column(db.Integer, default = 0)
+    level = db.Column(db.Integer, default = 1)
     experience = db.Column(db.Integer, default = 0)
 
     quests = db.relationship('Quest', back_populates='adventurer')
@@ -22,7 +22,9 @@ class Quest(db.Model):
     title = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String)
     difficulty = db.Column(db.String)
-    status = db.Column(db.String, default = 'incomplete')
+    quest_type = db.Column(db.String)
+    death = db.Column(db.String)
+    status = db.Column(db.String, default = 'Incomplete')
 
     adventurer_id = db.Column(db.Integer, db.ForeignKey('adventurers.id'))
     adventurer = db.relationship('Adventurer', back_populates='quests')

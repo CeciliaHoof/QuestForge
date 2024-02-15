@@ -2,24 +2,13 @@ from db_utils import *
 import random
 
 def enter_tavern():
-  print("Welcome to the Tavern, where all of your Adventurers wait to be hired to a quest. From here you can hire an adventurer to assign them quests, or you can delete an delete an adventurer. \n Here are all of the adventurers: \n")
-  display_all_adventurers()
-  display_adventurer_menu()
-
-def display_all_adventurers():
-  adventurers = get_all_adventurers()
-  if len(adventurers) == 0:
-    print("There are currently no Adventurers waiting for a quest! Create some Adventurers! \n")
-  else:
-    for adventurer in adventurers:
-      print(f'{adventurer.id} | {adventurer.name} \n')
-
-def display_adventurer_menu():
-  if len(get_all_adventurers()) == 0:
+  print("Welcome to the Tavern, where all of your Adventurers wait to be hired to a quest. From here you can hire an adventurer to assign them quests, or you can delete an adventurer.")
+  ad = display_all_adventurers()
+  if len(ad) == 0:
     print("Adventurer Menu")
     print("1. Create an Adventurer")
     print("2. Return to Main Menu")
-    choice = input("What is your choice (1/2)? ")
+    choice = input("What would you like to do? (1/2) ")
     if choice == "1":
       handle_adventurer_choice(choice)
     elif choice == "2":
@@ -28,36 +17,57 @@ def display_adventurer_menu():
       print("Invalid choice. Please enter 1 or 2.")
       enter_tavern()
   else:
-    print("Adventurer Menu")
-    print("1. Create an Adventurer")
-    print("2. Hire an Adventurer")
-    print("3. View Adventurer Details")
-    print("4. Fire an Adventurer")
-    print("5. Return to Main Menu")
-    adventurer_choice = input("What is your choice? (1/2/3/4/5) ")
-    handle_adventurer_choice(adventurer_choice)
+    display_adventurer_menu()
+
+def display_all_adventurers():
+  adventurers = get_all_adventurers()
+  if len(adventurers) == 0:
+    print("\nThere are currently no Adventurers waiting for a quest! Create some Adventurers!\n")
+  else:
+    print(f'\nHere are all your Adventurers:\n')
+    for adventurer in adventurers:
+      print(f'{adventurer.id} | {adventurer.name}\n')
+  return adventurers
+
+def display_adventurer_menu():
+  print("Adventurer Menu")
+  print("1. Create an Adventurer")
+  print("2. Hire an Adventurer")
+  print("3. View Adventurer Details")
+  print("4. Fire an Adventurer")
+  print("5. Return to Main Menu")
+  user_choice = input("What is your choice? (1/2/3/4/5) ")
+  handle_adventurer_choice(user_choice)
 
 def handle_adventurer_choice(choice):
   if choice == "1":
-    name = input("Enter the name of the adventurer: ")
-    adventurer_class = input("Enter the class of the adventurer (warrior, mage, rogue): ")
-    create_adventurer(name, adventurer_class)
-    enter_tavern()
+    new_adventurer()
   elif choice == "2":
     hire_adventurer()
   elif choice == "3":
-    adventurer = input("Which adventurer do you want to see? ")
-    view_adventurer(adventurer)
+    view_adventurer()
   elif choice == "4":
     fire_adventurer()
-    enter_tavern()
   elif choice == "5":
     return
   else:
-    print("Invalid choice. Please enter 1, 2, or 3.")
+    print("\nInvalid choice. Please enter 1, 2, 3, 4, or 5.\n")
+    enter_tavern()
 
-def view_adventurer(adventurer_id):
-  adventurer = get_adventurer_by_id(adventurer_id)
+def new_adventurer():
+  name = input("Enter the name of the adventurer: ")
+  adventurer_class = input("Enter the class of the adventurer (warrior, mage, rogue): ").title()
+  valid_classes = ['Mage', 'Warrior', 'Rogue']
+  if adventurer_class in valid_classes:
+    new_adventurer = create_adventurer(name, adventurer_class)
+    print(f'\nAdventurer {new_adventurer.name} successfully created!\n')
+  else:
+    print(f"\nInvalid Adventure class. Please try again.\n")
+  enter_tavern()
+
+def view_adventurer():
+  a_id = input("Which adventurer do you want to see? (1/2/3...) ")
+  adventurer = get_adventurer_by_id(a_id)
   if adventurer:
     quests = adventurer.quests
     quest_display = ''
@@ -65,11 +75,84 @@ def view_adventurer(adventurer_id):
         quest_display = f"{adventurer.name} has not been hired for any quests"
     for quest in quests:
         quest_display += f'<{quest.title}>'
-    print(f"\n{adventurer.name} \n Class: {adventurer.adventurer_class} \n Level: {adventurer.level} \n Experience: {adventurer.experience} \n Quests: {quest_display}")
+    print(f"\n{adventurer.name} \n Class: {adventurer.adventurer_class} \n Level: {adventurer.level} \n Experience: {adventurer.experience} \n Quests: {quest_display}\n")
   else:
-    print("Invalid adventurer. Please check your input.")
+    print("\nInvalid adventurer. Please check your input.\n")
   display_adventurer_submenu()
+
+def hire_adventurer():
+  quests = get_unassigned_quests()
+  if len(quests) == 0:
+    print("\nAll Quests are currently claimed. Time to embark on a quest!\n")
+  else:
+    display_all_adventurers()
+    a_id = input("Which Adventure would you like to hire? (1/2/3...) ")
+    print("Here are the quests that still need an adventurer:")
+    for q in quests:
+      print(f'{q.id} | {q.title} \n Difficulty: {q.difficulty} \n Type: {q.quest_type} \n')
+    q_id = input("Which quest is this adventurer going to tackle? (1/2/3...) ")
+    quest_check = get_quest_by_id(q_id)
+    if quest_check.adventurer:
+      print(f"\nAn Adventurer has already been hired to complete that Quest.\n")
+    else:
+      adventurer, quest = assign_adventurer_to_quest(a_id, q_id)
+      print(f"\nAdventurer {adventurer.name} hired to {quest.title}! Lets see if they succeed...\n")
+      attempt_quest(adventurer, quest)
+  display_hire_menu()
+
+def attempt_quest(adventurer, quest):
+  difficulty_multiplier = {'Easy': 10, 'Medium': 14, 'Hard': 17}
+  experience_multiplier = {'Easy': 3, 'Medium': 5, 'Hard': 7}
+  matching_classes = {('Stealth', 'Rogue'), ('Magic', 'Mage'), ('Stealth', 'Rogue')}
+
+  if (quest.quest_type, adventurer.adventurer_class) in matching_classes:
+    for value in difficulty_multiplier:
+      difficulty_multiplier[value] -= 4
+
+  level = adventurer.level
+  if level > 1:
+    for value in difficulty_multiplier:
+      difficulty_multiplier[value] -= level
+
+  success_threshold = difficulty_multiplier.get(quest.difficulty)
+  roll = random.randint(1, 20)
   
+  if roll >= success_threshold:
+    experience_gained = experience_multiplier.get(quest.difficulty)
+    print(f"{adventurer.name} successfully completed the quest {quest.title}. {experience_gained} XP gained.\n")
+    complete_quest(adventurer, experience_gained, quest)
+  else:
+    print(f"{adventurer.name} failed the quest {quest.title}. To reattempt this quest, visit the Quest Board and view incomplete Quests.\n\nTime for a death roll...\n")
+    death_roll =  random.randint(1, 20)
+    if death_roll == 1:
+      print(f"{adventurer.name} was {quest.death}... RIP\n")
+      delete_adventurer(adventurer.id)
+    else:
+      print(f"Phew! {adventurer.name} survived\n")
+
+def fire_adventurer():
+  print(f'Firing an Adventure will remove them from their quests, and any successfully completed quests will be reset to incomplete.')
+  print('1. Yes, I still want to fire an Adventurer.')
+  print("2. No, I guess I'll keep them.")
+  choice = input("What do is your choice? (1/2) ")
+  handle_fire_choice(choice)
+
+def handle_fire_choice(choice):
+  if choice == '1':
+    id = input("Which adventurer would you like to fire? (1/2/3...) ")
+    adventurer = get_adventurer_by_id(id)
+    deleted = delete_adventurer(id)
+    if deleted:
+      print(f"\n{adventurer.name} fired successfully!\n")
+    else:
+      print(f"\nInvalid adventurer. Check your input.\n")
+    enter_tavern()
+  elif choice == '2':
+    enter_tavern()
+  else:
+    print('\nInvalid choice. Please enter 1 or 2.\n')
+    fire_adventurer()
+
 def display_adventurer_submenu():
   print('1. Return to Tavern')
   print('2. Return to Main Menu')
@@ -84,108 +167,17 @@ def handle_adventurer_submenu(choice):
   else:
     print("Invalid choice. Please enter 1 or 2.")
 
-def hire_adventurer():
-  quests = get_unassigned_quests()
-  if len(quests) == 0:
-    print("All Quests are currently claimed. Time to embark on a quest!")
-  else:
-    print("Here are your adventurers:\n")
-    display_all_adventurers()
-    adventurer = input("Which Adventure would you like to hire? (1/2/3...) ")
-    print("Here are the quests that still need an adventurer:")
-    for quest in quests:
-      print(f'{quest.id}: {quest.title} \n Difficulty: {quest.difficulty} \n')
-    quest_hire = input("Which quest is this adventurer going to tackle? (1/2/3...) ")
-    assign_adventurer_to_quest(adventurer, quest_hire)
-  display_hire_menu()
-  
 def display_hire_menu():
   print("Hire Menu")
   print("1. Keep Hiring Adventurers")
-  print("2. Embark on Quest")
-  print("3. Return to Tavern")
-  hire_choice = input("What is your choice? (1/2/3) ")
+  print("2. Return to Tavern")
+  hire_choice = input("What is your choice? (1/2) ")
   handle_hire_choice(hire_choice)
 
 def handle_hire_choice(choice):
   if choice == "1":
     hire_adventurer()
   elif choice == "2":
-    embark_on_quest()
-  elif choice == "3":
     enter_tavern()
   else:
     print("Invalid input, please enter 1 or 2.")
-
-def embark_on_quest():
-  display_all_adventurers()
-
-  adventurer_choice = input("Which Adventurer do you quest with? (1/2/3...) ")
-  adventurer = get_adventurer_by_id(adventurer_choice)
-  if adventurer == None:
-    print("Invalid adventure. Please check your input.")
-  else:
-    quests = [quest for quest in adventurer.quests if quest.status == 'incomplete']
-    if len(quests) == 0:
-      print("This Adventurer has no incomplete quests. Pick another Adventurer or return to tavern to hire them to more quests.")
-    else:
-      for quest in quests:
-        print(f'{quest.id} | {quest.title} | {quest.difficulty}')
-      quest_choice = input("Which Quest do you want to tackle first? (1/2/3...) ")
-      quest = get_quest_by_id(quest_choice)
-      if quest in quests:
-        attempt_quest(adventurer, quest)
-      else:
-        print("This adventurer has not been hired for that quest or has already completed it. Try again.")
-
-  questing_menu()
-
-def attempt_quest(adventurer, quest):
-  level = adventurer.level
-  difficulty_multiplier = {'Easy': 5, 'Medium': 10, 'Hard': 15}
-  if level > 1:
-    for value in difficulty_multiplier:
-      difficulty_multiplier[value] -= level
-  experience_multiplier = {'Easy': 3, 'Medium': 5, 'Hard': 7}
-  success_threshold = difficulty_multiplier.get(quest.difficulty)
-  roll = random.randint(1, 20)
-
-  if roll >= success_threshold:
-    print(f"{adventurer.name} successfully completed the quest {quest.title}")
-    experience_gained = experience_multiplier.get(quest.difficulty)
-    complete_quest(adventurer, experience_gained, quest)
-  else:
-    print(f"{adventurer.name} failed the quest {quest.title}. Better luck next time!")
-
-def questing_menu():
-  print("Questing Menu")
-  print("1. Keep Questing")
-  print("2. Return to Tavern")
-  choice = input("What would you like to do? (1/2) ")
-  handle_questing_menu(choice)
-
-def handle_questing_menu(choice):
-  if choice == "1":
-    embark_on_quest()
-  elif choice == "2":
-    enter_tavern()
-  else:
-    print("Invalid Input. Please input 1 or 2.")
-    enter_tavern()
-
-def fire_adventurer():
-  print(f'Firing an Adventure will remove them from their quests, and any successfully completed quests will be reset to incomplete.')
-  print('1. Yes, I still want to fire an Adventurer.')
-  print("2. No, I guess I'll keep them.")
-  choice = input("What do is your choice? (1/2) ")
-  handle_fire_choice(choice)
-
-def handle_fire_choice(choice):
-  if choice == '1':
-    id = input("Which adventurer would you like to fire? (1/2/3...) ")
-    delete_adventurer(id)
-  elif choice == '2':
-    enter_tavern()
-  else:
-    print('Invalid choice. Please enter 1 or 2.')
-    fire_adventurer()

@@ -10,33 +10,88 @@ if __name__ == "__main__":
 
     quests = [
       Quest(
-        title = "The Goblins' Menace",
-        description = "Goblins have invaded the peaceful village of Eldoria. Embark on a quest to defeat the goblin horde, rescue the captured villagers, and restore peace to Eldoria.",
-        difficulty = "Easy"
+          title="Herbology Challenge",
+          description="Collect rare herbs from the enchanted forest for the town's apothecary.",
+          difficulty="Easy",
+          quest_type="Magic",
+          death="poisoned by misidentifying a dangerous plant"
       ),
-
       Quest(
-        title = 'Enchanted Forest Exploration',
-        description = 'Venture into the mystical Enchanted Forest to discover its secrets and gather rare herbs for the village alchemist. Beware of magical creatures and hidden challenges.',
-        difficulty = "Medium"
+          title="Sorcerer's Apprentice",
+          description="Assist a powerful sorcerer with a magical experiment gone awry.",
+          difficulty="Medium",
+          quest_type="Magic",
+          death="accidentally transformed into a small creature"
       ),
-
       Quest(
-        title = "Dragon's Roar",
-        description = "A menacing dragon has taken residence in the nearby mountains. Gather a group of brave adventurers to confront the dragon, safeguard the kingdom, and claim the dragon's treasure.",
-        difficulty = "Hard"
+          title="Arcane Anomaly",
+          description="Investigate a magical anomaly disrupting the balance of the mystical ley lines.",
+          difficulty="Hard",
+          quest_type="Magic",
+          death="unraveled by uncontrollable magical energies"
       ),
-
       Quest(
-        title = "Feywild Diplomacy",
-        description = "The ethereal Feywild has opened a portal to our realm, causing disturbances. Travel to the Feywild, negotiate with its magical inhabitants, and restore the balance between the two worlds.",
-        difficulty = "Medium"
+          title="The Cursed Relic",
+          description="Retrieve a cursed relic from an ancient tomb without succumbing to its dark influence.",
+          difficulty="Medium",
+          quest_type="Magic",
+          death="corrupted and transformed into an undead minion"
       ),
-
       Quest(
-        title = "Ghostly Hauntings",
-        description = "A haunted castle on the outskirts of the kingdom is causing distress among the locals. Investigate the ghostly occurrences, unravel the mysteries, and lay the spirits to rest.",
-        difficulty = "Medium"
+          title="Goblin Gathering",
+          description="Clear out a goblin camp that has been causing trouble in the nearby woods.",
+          difficulty="Easy",
+          quest_type="Strength",
+          death="ambushed by goblin archers"
+      ),
+      Quest(
+          title="Bandit Infestation",
+          description="Eliminate a bandit group causing chaos on the trade route.",
+          difficulty="Medium",
+          quest_type="Strength",
+          death="ambushed by cunning bandit leaders"
+      ),
+      Quest(
+          title="Dragon's Lair",
+          description="Slay the mighty dragon that has terrorized the kingdom for centuries.",
+          difficulty="Hard",
+          quest_type="Strength",
+          death="incinerated by dragon's breath"
+      ),
+      Quest(
+          title="Tournament of Champions",
+          description="Compete in a grand tournament against skilled warriors from across the realm.",
+          difficulty="Medium",
+          quest_type="Strength",
+          death="defeated in a duel against a formidable opponent"
+      ),
+      Quest(
+          title="Haunted Ruins",
+          description="Explore ancient ruins rumored to be haunted and recover a valuable artifact.",
+          difficulty="Easy",
+          quest_type="Stealth",
+          death="possessed by vengeful spirits"
+      ),
+      Quest(
+          title="Labyrinth of Shadows",
+          description="Navigate a dark labyrinth to retrieve a lost artifact.",
+          difficulty="Hard",
+          quest_type="Stealth",
+          death="trapped and consumed by shadows"
+      ),
+      Quest(
+          title="Assassination Contract",
+          description="Infiltrate an enemy stronghold and eliminate a dangerous target.",
+          difficulty="Medium",
+          quest_type="Stealth",
+          death="captured and executed by enemy guards"
+      ),
+      Quest(
+          title="Thieves' Guild Heist",
+          description="Steal a priceless artifact from the heavily guarded Thieves' Guild headquarters.",
+          difficulty="Hard",
+          quest_type="Stealth",
+          death="caught in the act and subjected to the guild's ruthless punishment"
       )
     ]
 
