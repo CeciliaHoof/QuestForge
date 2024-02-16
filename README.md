@@ -2,7 +2,7 @@
 
 QuestForge is an interactive text-based fantasy adventure game with a focus on managing a party of adventurers. This project utilizes Python, SQLAlchemy, and rich console formatting to create an immersive experience.
 
-![QuestForge Welcome](images/QuestForge_welcome.pngQuest)
+![QuestForge Welcome](images/QuestForge_welcome.png)
 
 ## Features
 
@@ -24,7 +24,7 @@ QuestForge is an interactive text-based fantasy adventure game with a focus on m
 
 ## Game Mechanics
 
-QuestForge operates on a simple yet engaging set of game mechanics. Adventurers gain experience by completing quests, and guilds strive to achieve glory through successful adventures.
+QuestForge operates on a simple yet engaging set of game mechanics. Adventurers gain experience by completing quests, and users strive to achieve glory through successful adventures.
 
 ## Future Development Goals
 
@@ -34,12 +34,10 @@ QuestForge operates on a simple yet engaging set of game mechanics. Adventurers 
 
 2. Enhanced Graphics:
     - Introduce more ASCII art graphics to enhance the visual appeal.
-    - Add graphical elements for quests, characters, and guild management.
+    - Add graphical elements for quests, characters, and party management.
 
 3. Expanded Gameplay:
     - Introduce new gameplay mechanics and features.
-    - Explore additional interactions between adventurers, quests, and the guild.
+    - Explore additional interactions between adventurers, quests, and the party.
 
 Feel free to contribute and share your ideas for the future development of QuestForge!
-
-[def]: QuestF
