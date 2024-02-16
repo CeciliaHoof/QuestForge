@@ -6,9 +6,6 @@ def get_all_quests():
 def get_all_adventurers():
     return db.session.query(Adventurer).all()
 
-def get_unassigned_quests():
-    return db.session.query(Quest).filter(Quest.adventurer_id.is_(None)).all()
-
 def create_adventurer(name, adventurer_class):
     new_adventurer = Adventurer(name = name, adventurer_class = adventurer_class)
     db.session.add(new_adventurer)
@@ -28,18 +25,6 @@ def delete_adventurer(id):
     else:
         return False
 
-def assign_adventurer_to_quest(adventurer_select, quest_select):
-
-    adventurer = db.session.query(Adventurer).filter(Adventurer.id == adventurer_select).first()
-    quest = db.session.query(Quest).filter(Quest.id == quest_select).first()
-
-    if adventurer and quest:
-        quest.adventurer = adventurer
-        db.session.commit()
-        return(adventurer, quest)
-    else:
-        print("Invalid adventurer or quest. Please check your input.")
-
 def get_adventurer_by_id(id):
     return db.session.query(Adventurer).filter(Adventurer.id == id).first()
 
@@ -51,6 +36,9 @@ def get_quests_by_type(type):
     return db.session.query(Quest).filter(db.func.lower(Quest.quest_type) == q_type).all()
 
 def complete_quest(adventurer, experience, quest, success):
+    quest.adventurer = adventurer
+    db.session.commit()
+
     adventurer.experience += experience
     quest.status = success
     db.session.commit()
@@ -63,3 +51,10 @@ def complete_quest(adventurer, experience, quest, success):
             adventurer.experience -= experience_threshold
             db.session.commit()
             print(f'{adventurer.name} leveled up! They are now level {adventurer.level}\n')
+
+def exit_game(quests):
+    Adventurer.query.delete()
+    for quest in quests:
+        quest.adventurer = None
+        quest.status = "Incomplete"
+    db.session.commit()
