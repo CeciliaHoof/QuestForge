@@ -1,15 +1,24 @@
 from config import app, migrate
 from db_utils import *
 from models import db
-from cli_functionality.quest import view_quest_board
-from cli_functionality.adventurer import enter_tavern
+from cli_functionality.quest_board import view_quest_board
+from cli_functionality.tavern import enter_tavern
 from rich.console import Console
 import os
 import time
 
 console = Console()
 
-logo = "\n_______           _______  _______ _________ _______  _______  _______  _______  _______ \n(  ___  )|\     /|(  ____ \(  ____ \\__   __ /(  ____ \(  ___  )(  ____ )(  ____ \(  ____ \ \n| (   ) || )   ( || (    \/| (    \/   ) (   | (    \/| (   ) || (    )|| (    \/| (    \/\n| |   | || |   | || (__    | (_____    | |   | (__    | |   | || (____)|| |      | (__   .         \n| |   | || |   | ||  __)   (_____  )   | |   |  __)   | |   | ||     __)| | ____ |  __)  .      \n| | /\| || |   | || (            ) |   | |   | (      | |   | || (\ (   | | \_  )| (     .        \n| (_\ \ || (___) || (____/\/\____) |   | |   | )      | (___) || ) \ \__| (___) || (____/\ \n(____\/_)(_______)(_______/\_______)   )_(   |/       (_______)|/   \__/(_______)(_______/\n\n"
+logo = '''
+_______           _______  _______ _________ _______  _______  _______  _______  _______ 
+(  ___  )|\     /|(  ____ \(  ____ \\__   __ /(  ____ \(  ___  )(  ____ )(  ____ \(  ____ \ 
+| (   ) || )   ( || (    \/| (    \/   ) (   | (    \/| (   ) || (    )|| (    \/| (    \/
+| |   | || |   | || (__    | (_____    | |   | (__    | |   | || (____)|| |      | (__   . 
+| |   | || |   | ||  __)   (_____  )   | |   |  __)   | |   | ||     __)| | ____ |  __)  . 
+| | /\| || |   | || (            ) |   | |   | (      | |   | || (\ (   | | \_  )| (     . 
+| (_\ \ || (___) || (____/\/\____) |   | |   | )      | (___) || ) \ \__| (___) || (____/\ 
+(____\/_)(_______)(_______/\_______)   )_(   |/       (_______)|/   \__/(_______)(_______/
+'''
 
 def display_welcome():
   console.print(logo, justify="center", style='bright_black', highlight=False)

@@ -8,7 +8,24 @@ console = Console()
 
 def view_quest_board():
   os.system('clear')
-  console.print(f"\n____________________________________________\n /                                             \ \n|                  Quest Board                  |\n|_______________________________________________|\n|   .---------.    .---------.    .---------.   |\n|  |   QUEST   |  |   QUEST   |  |   QUEST   |  |\n|  |-----------|  |-----------|  |-----------|  |\n|  |  Seeking  |  |   Do you  |  |  Stealth  |  |\n|  | hero with |  |  have the |  |   expert  |  |\n|  |  certain  |  |  strength |  |   needed. |  |\n|  |   magic   |  |   of ten  |  |    TOP    |  |\n|  |  powers.  |  |    men?   |  |  SECRET!  |  |\n|   -----------    -----------    -----------   |\n|                                               |\n|              Discover quests and              |\n|                become a legend!               |\n \_____________________________________________/ \n", justify='center', highlight=False)
+  console.print('''
+.-----------------------------------------------.
+|                  Quest Board                  |
+|_______________________________________________|
+|   .---------.    .---------.    .---------.   |
+|  |   QUEST   |  |   QUEST   |  |   QUEST   |  |
+|  |-----------|  |-----------|  |-----------|  |
+|  |  Seeking  |  |   Do you  |  |  Stealth  |  |
+|  | hero with |  |  have the |  |   expert  |  |
+|  |  certain  |  |  strength |  |   needed. |  |
+|  |   magic   |  |   of ten  |  |    TOP    |  |
+|  |  powers.  |  |    men?   |  |  SECRET!  |  |
+|  '-----------'  '-----------'  '-----------'  |
+|                                               |
+|              Discover quests and              |
+|                become a legend!               |
+'_______________________________________________'
+''', justify='center', highlight=False)
   console.print(f"\nWelcome to the Quest Board!\n", justify='center', style='b medium_purple4')
   console.print(f"\nGreetings, brave Adventurers! The Quest Board awaits your courage, offering challenges for heroes seeking glory and legendary tales.\n\nExplore the fliers on the board, each describing a unique quest awaiting a hero with specific skills.\nQuests that are complete have been crossed off, but you can still view their details.", justify='center')
   quests = get_all_quests()
@@ -196,18 +213,6 @@ def attempt_quest(adventurer, quest):
     else:
       print(f"Phew! {adventurer.name} survived\n")
       complete_quest(adventurer, experience_gained, quest, 'Failed')
-
-def display_completed_quests():
-  os.system('clear')
-  quests = [quest for quest in get_all_quests() if quest.status == "Complete"]
-  console.print("\nCompleted Quests\n", justify='center', style='b medium_purple4')
-  if len(quests) == 0:
-    console.print("\nNo Quests have been completed!\nIf your party is ready to tackle Quests, navigate back to Quest board, or go to the Tavern to hire more Adventurers.\n", justify='center')
-  else:
-    for quest in quests:
-      console.print(f'{quest.title}', style = 'b')
-      print(f"\n Description: {quest.description} \n Difficulty: {quest.difficulty}\n Type: {quest.quest_type} \n Adventurer: {quest.adventurer} \n Status: {quest.status}\n")
-  display_quest_submenu()
 
 def display_quest_submenu():
   console.print(f"\nQuest Menu\n", style='b medium_purple4')

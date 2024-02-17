@@ -1,5 +1,5 @@
 from db_utils import *
-from .quest import view_quest_board
+from .quest_board import view_quest_board
 import time
 import os
 from rich.console import Console
@@ -8,7 +8,24 @@ console = Console()
 
 def enter_tavern():
   os.system('clear')
-  console.print(f"\n      /\                                  ) (\n     /\/\                               ) ( )\n    /\/\/\                             _(_)_.     \n   /\/\/\/\                           |     |\n  /\/\/\/\/\                          |     |\n /\/\/\/\/\/\                         |     |\n/\/\/\/\/\/\/\                        |     |\n|~~~~~~~~~~~~|________________________|_____|\n|  /\    /\  |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\|\n|  \/    \/  |\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|\n|   TAVERN   |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\|\n|     __     |\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|\n|    /  \    |  /\    /\    /\    /\    /\  |\n|   |    |   | |  |  |  |  |  |  |  |  |  | |\n|   |-   |   | |__|  |__|  |__|  |__|  |__| |\n|___|____|___|______________________________|\n", style= 'orange4', justify='center', highlight=False)
+  console.print("""
+      /\                                  ) (
+     /\/\                               ) ( )
+    /\/\/\                             _(_)_.     
+   /\/\/\/\                           |     |
+  /\/\/\/\/\                          |     |
+ /\/\/\/\/\/\                         |     |
+/\/\/\/\/\/\/\                        |     |
+|~~~~~~~~~~~~|________________________|_____|
+|  /\    /\  |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\|
+|  \/    \/  |\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|
+|   TAVERN   |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\|
+|     __     |\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|
+|    /  \    |  /\    /\    /\    /\    /\  |
+|   |    |   | |  |  |  |  |  |  |  |  |  | |
+|   |-   |   | |__|  |__|  |__|  |__|  |__| |
+|___|____|___|______________________________|
+                """, style= 'orange4', justify='center', highlight=False)
   console.print(f"\nWelcome to the Tavern!\n\n", style = "b orange4", justify='center')
   console.print(f"Where all of your Adventurers will await their Quest assignments once hired.\n\nIf the Tavern is empty, hire an Adventurer, and they'll come in.\n\nIf you hire an Adventurer and aren't happy with their performance, you can fire them.\nBut be careful, this will undo any Quests they successfully completed.\n\nOnce your party is complete, head to the Quest Board to start sending Adventurers on Quests!", justify="center")
   ad = display_all_adventurers()
@@ -66,8 +83,21 @@ def handle_adventurer_choice(choice):
 def new_adventurer():
   os.system('clear')
   console.print(f'\n Hiring an Adventurer', justify="center", style='b orange4')
-  print(f"\n  ____________________________________________________\n /                                                    \ \n|   Dear Adventurer,                                   |\n|                                                      |\n|   I am pleased to offer you an exciting              |\n|   opportunity to embark on heroic Quests as part.    |\n|   of my Adventurer party.                            |\n|                                                      |\n|   Join us at the Tavern to accept epic quests!       |\n|                                                      |\n|   Sincerely,                                         |\n|   Party Leader                                       |\n \____________________________________________________/")
-  console.print(f"\nEnter the name and class of the Adventurer you want to hire, and the letter will be sent!", style='b')
+  print(f"""
+                                                                          .------------------------------------------------------.
+                                                                          |                                                      | 
+                                                                          |   Dear Adventurer,                                   |
+                                                                          |                                                      |
+                                                                          |   I am pleased to offer you an exciting              |
+                                                                          |   opportunity to embark on heroic Quests as part.    |
+                                                                          |   of my Adventurer party.                            |
+                                                                          |                                                      |
+                                                                          |   Join us at the Tavern to accept epic quests!       |
+                                                                          |                                                      |
+                                                                          |   Sincerely,                                         |
+                                                                          |   Party Leader                                       |
+                                                                          '______________________________________________________'""")
+  console.print(f"\n\nEnter the name and class of the Adventurer you want to hire, and the letter will be sent!", justify='center', style='b')
   name = input(f"\nEnter the name of the Adventurer: ")
   adventurer_class = input(f"\nEnter the class of the Adventurer (warrior, mage, rogue): ").title()
   valid_classes = ['Mage', 'Warrior', 'Rogue']
