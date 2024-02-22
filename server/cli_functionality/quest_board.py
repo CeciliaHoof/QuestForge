@@ -173,7 +173,7 @@ def attempt_quest(adventurer, quest):
   console.print(f'\n{adventurer.name} is attempting {quest.title}!\n', style = 'b')
   difficulty_multiplier = {'Easy': 10, 'Medium': 14, 'Hard': 17}
   experience_multiplier = {'Easy': 3, 'Medium': 5, 'Hard': 7}
-  matching_classes = {('Stealth', 'Rogue'), ('Magic', 'Mage'), ('Stealth', 'Rogue')}
+  matching_classes = {('Stealth', 'Rogue'), ('Magic', 'Mage'), ('Strength', 'Warrior')}
 
   if (quest.quest_type, adventurer.adventurer_class) in matching_classes:
     for value in difficulty_multiplier:
