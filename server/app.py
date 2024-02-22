@@ -1,8 +1,7 @@
 from config import app, migrate
 from db_utils import *
 from models import db
-from cli_functionality.quest_board import view_quest_board
-from cli_functionality.tavern import enter_tavern
+from cli_functionality import view_quest_board, enter_tavern
 from rich.console import Console
 import os
 import time
